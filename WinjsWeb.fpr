@@ -1,0 +1,7 @@
+library WinjsWeb;
+
+uses ChakraWeb;
+
+exports GetJsValue;
+
+end.
