@@ -27,16 +27,33 @@ implementation
     SetProperty(Result, 'responseString', StringAsJsString(Response));
   end;
 
+  function WebGetContentLength(Args: PJsValue; ArgCount: Word): TJsValue;
+  var
+    aURL: WideString;
+    ContentLength: Integer;
+  begin
+    CheckParams('getContentLength', Args, ArgCount, [jsString], 1);
+    aURL := JsStringAsString(Args^);
+
+    Result := CreateObject;
+
+    SetProperty(Result, 'statusCode', IntAsJsNumber(HttpGetContentLength(aURL, ContentLength)));
+    SetProperty(Result, 'contentLength', IntAsJsNumber(ContentLength));
+
+  end;
+
   function WebGetFile(Args: PJsValue; ArgCount: Word): TJsValue;
   var
     aURL: WideString;
     aFileName: WideString;
+    ProgressCallback: TJsValue;
   begin
-    CheckParams('getFile', Args, ArgCount, [jsString, jsString], 2);
+    CheckParams('getFile', Args, ArgCount, [jsString, jsString, jsFunction], 3);
     aURL := JsStringAsString(Args^); Inc(Args);
-    aFileName := JsStringAsString(Args^);
+    aFileName := JsStringAsString(Args^); Inc(Args);
+    ProgressCallback := Args^;
 
-    Result := IntAsJsNumber(HttpGetFile(aURL, aFileName));
+    Result := IntAsJsNumber(HttpGetFile(aURL, aFileName, ProgressCallback));
   end;
 
   function WebGetConnectionState(Args: PJsValue; ArgCount: Word): TJsValue;
@@ -59,6 +76,7 @@ implementation
 
     SetFunction(Result, 'getConnectionState', WebGetConnectionState);
     SetFunction(Result, 'getContent', WebGetContent);
+    SetFunction(Result, 'getContentLength', WebGetContentLength);
     SetFunction(Result, 'getFile', WebGetFile);
   end;
 
