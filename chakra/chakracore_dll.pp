@@ -27,12 +27,11 @@ interface
   function JsGetUndefinedValue(out UndefinedValue: TJsValue): TJsErrorCode; stdcall;
   function JsCreateObject(out Value: TJsValue): TJsErrorCode; stdcall;
   function JsCreateArray(ItemCount: Cardinal; out ArrayValue: TJsValue): TJsErrorCode; stdcall;
-  function JsGetIndexedProperty(ArrayValue, ItemIndex: TJsValue; out ItemValue: TJsValue): TJsErrorCode; stdcall;
   function JsSetIndexedProperty(ArrayValue, ItemIndex, Value: TJsValue): TJsErrorCode; stdcall;
   function JsCreateError(Message: TJsValue; out Error: TJsValue): TJsErrorCode; stdcall;
   function JsSetException(Error: TJsValue): TJsErrorCode; stdcall;
   function JsGetValueType(Value: TJsValue; out ValueType: TJsValueType): TJsErrorCode; stdcall;
-
+  function JsCallFunction(Func: TJsValue; Args: PJsValue; ArgCount: Word; out ResultValue: TJsValue): TJsErrorCode; stdcall;
 
 implementation
 
@@ -59,10 +58,10 @@ implementation
   function JsGetUndefinedValue; external dll;
   function JsCreateObject; external dll;
   function JsCreateArray; external dll;
-  function JsGetIndexedProperty; external dll;
   function JsSetIndexedProperty; external dll;
   function JsCreateError; external dll;
   function JsSetException; external dll;
   function JsGetValueType; external dll;
+  function JsCallFunction; external dll;
 
 end.

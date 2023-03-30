@@ -35,10 +35,11 @@ interface
   function CreateObject: TJsValue;
 
   function CreateArray(ItemCount: Integer): TJsValue;
-  function GetArrayItem(ArrayValue: TJsValue; ItemIndex: Integer): TJsValue;
   procedure SetArrayItem(ArrayValue: TJsValue; ItemIndex: Integer; Value: TJsValue);
 
   function GetValueType(Value: TJsValue): TJsValueType;
+
+  function CallFunction(Func: TJsValue; Args: PJsValue; ArgCount: Word): TJsValue;
 
 implementation
 
@@ -213,11 +214,6 @@ implementation
     TryChakraAPI('JsCreateArray', JsCreateArray(ItemCount, Result));
   end;
 
-  function GetArrayItem;
-  begin
-    TryChakraAPI('JsGetIndexedProperty', JsGetIndexedProperty(ArrayValue, IntAsJsNumber(ItemIndex), Result));
-  end;
-
   procedure SetArrayItem;
   begin
     TryChakraAPI('JsSetIndexedProperty', JsSetIndexedProperty(ArrayValue, IntAsJsNumber(ItemIndex), Value));
@@ -226,6 +222,11 @@ implementation
   function GetValueType;
   begin
     TryChakraAPI('JsGetValueType', JsGetValueType(Value, Result));
+  end;
+
+  function CallFunction;
+  begin
+    TryChakraAPI('JsCallFunction', JsCallFunction(Func, Args, ArgCount, Result));
   end;
 
 end.
