@@ -16,6 +16,8 @@ get-js-value: ->
     status-code: number
     response-string: string
 
-  get-file: (url: string, filename: string) -> number
+  get-file: (url: string, filename: string, progress-callback: function) -> number
+  
+  get-content-length: (url: string) -> number
   
 ```
